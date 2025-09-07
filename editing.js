@@ -1,3 +1,4 @@
+function dostuff(){
 fetch('background.json')
   .then(response => response.json())
   .then(data => {
@@ -24,3 +25,5 @@ fetch('background.json')
     }
   })
   .catch(err => console.error("Error fetching JSON:", err));
+}
+dostuff()
