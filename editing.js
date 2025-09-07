@@ -23,7 +23,5 @@ function convertToArray(bg) {
 // Convert
 const converted = convertToArray(backgrounds);
 
-// Copy to clipboard
-navigator.clipboard.writeText(JSON.stringify(converted, null, 2))
-  .then(() => console.log("Copied converted array to clipboard!"))
-  .catch(err => console.error("Failed to copy:", err));
+// Output to console
+console.log(JSON.stringify(converted, null, 2));
