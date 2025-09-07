@@ -1,26 +1,29 @@
-//delete this file after usage
-const fs = require('fs');
+// Example: your JSON object loaded in JS
+const backgrounds = {
+  "1": "10101010 11110000 00001111 ...",
+  "2": "..."
+};
 
-// Load your existing JSON
-const rawData = fs.readFileSync('background.json', 'utf-8');
-const backgrounds = JSON.parse(rawData);
-
-const newBackgrounds = {};
-
-// Iterate over each background
-for (const key in backgrounds) {
-    const bitString = backgrounds[key].replace(/ /g, ''); // remove spaces
+// Function to convert bit strings to decimal arrays
+function convertToArray(bg) {
+  const result = {};
+  for (const key in bg) {
+    const bitString = bg[key].replace(/ /g, ''); // remove spaces
     const byteCount = bitString.length / 8;
     const byteArray = [];
-
     for (let i = 0; i < byteCount; i++) {
-        const byteBits = bitString.slice(i * 8, i * 8 + 8);
-        byteArray.push(parseInt(byteBits, 2));
+      const byteBits = bitString.slice(i * 8, i * 8 + 8);
+      byteArray.push(parseInt(byteBits, 2));
     }
-
-    newBackgrounds[key] = byteArray; // store as array of decimals
+    result[key] = byteArray;
+  }
+  return result;
 }
 
-// Write back to a new JSON file
-fs.writeFileSync('background_array.json', JSON.stringify(newBackgrounds, null, 2));
-console.log('Conversion complete! Saved to background_array.json');
+// Convert
+const converted = convertToArray(backgrounds);
+
+// Copy to clipboard
+navigator.clipboard.writeText(JSON.stringify(converted, null, 2))
+  .then(() => console.log("Copied converted array to clipboard!"))
+  .catch(err => console.error("Failed to copy:", err));
