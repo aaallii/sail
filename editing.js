@@ -1,22 +1,10 @@
-// Fetch your background JSON
-fetch('background.json')
-  .then(res => res.json())
-  .then(backgrounds => {
-    
-    // Convert function
-    function convertToArray(bg) {
-      const result = {};
-      for (const key in bg) {
-        const bitsArray = bg[key].trim().split(/\s+/).filter(s => s.length === 8);
-        const byteArray = bitsArray.map(bits => parseInt(bits, 2));
-        result[key] = byteArray;
-      }
-      return result;
-    }
+ // Assume you already have PNG in base64
+const binary = atob(base64data.split(',')[1]);
+const bytes = new Uint8Array(binary.length);
+for (let i = 0; i < binary.length; i++) {
+  bytes[i] = binary.charCodeAt(i);
+}
 
-    const converted = convertToArray(backgrounds);
-
-    // Output to console so you can copy manually
-    console.log(JSON.stringify(converted, null, 2));
-  })
-  .catch(err => console.error('Failed to fetch JSON:', err));
+const png = UPNG.decode(bytes.buffer);   // decode PNG
+const rgba = UPNG.toRGBA8(png)[0];      // get raw pixel bytes
+console.log(rgba); // Uint8Array of [R,G,B,A,R,G,B,A,...]
